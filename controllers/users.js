@@ -1,25 +1,58 @@
 const { request, response } = require('express')
+const bcryptjs = require('bcryptjs')
+const User = require('../models/user')
 
-const userGet = (req = request, res = response)=>{
-    const {nombre, apikey} = req.query
+
+const userGet = async (req = request, res = response)=>{
+    let {limit = 5, from = 0} = req.query
+    const query = { state: true }
+
+    limit = Number(limit)
+    from = Number(from)
+
+
+    //const users = await User.find().limit(Number(limit)).skip(Number(from))
+
+    const [ count, users ] = await Promise.all([
+        User.count(query),
+        User.find(query).limit(Number(limit)).skip(Number(from))
+    ]);
+
+
     res.json({
-        msg:'GET API => Controller',
-        nombre,
-        apikey
+        from,
+        limit,
+        count,
+        users
     });
 }
 
-const userPost = (req = request, res = response)=>{
+const userPost = async (req, res = response)=>{
+
+    const {name, email, password, role} = req.body
+    const user = new User({name, email, password, role})
+
+    const salt = bcryptjs.genSaltSync()
+    user.password = bcryptjs.hashSync(password,salt)
+
+    await user.save()
     res.json({
-        msg:'POST API => Controller'
+        user
     });
 }
 
-const userPut =(req = request, res = response)=>{
+const userPut =async(req = request, res = response)=>{
     const {id} = req.params
-    res.json({ 
-        msg:'PUT API => Controller',
-        id
+    const {password, google, email,...userBody} = req.body
+    
+    if(password){
+        const salt = bcryptjs.genSaltSync()
+        userBody.password = bcryptjs.hashSync(password,salt)
+    }
+    const user = await User.findOneAndUpdate(id,userBody)
+
+    res.json({
+        user
     });
 }
 

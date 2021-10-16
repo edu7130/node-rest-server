@@ -18,8 +18,9 @@ const userGet = async (req = request, res = response)=>{
         User.find(query).limit(Number(limit)).skip(Number(from))
     ]);
 
-
+    const userAuth = req.user
     res.json({
+        userAuth,
         from,
         limit,
         count,
@@ -56,9 +57,16 @@ const userPut =async(req = request, res = response)=>{
     });
 }
 
-const userDelete =(req = request, res = response)=>{
+const userDelete = async (req = request, res = response)=>{
+
+    const {id} = req.params
+
+    const user = await User.findByIdAndUpdate(id, {active: false})
+
+    const authuser = req.user
     res.json({
-        msg:'DELETE API => Controller'
+        user,
+        authuser
     });
 }
 

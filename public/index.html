@@ -1,12 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Access denied</title>
-</head>
-<body>
-    <h1 style="margin-top: 50vh;margin-left: 40vw;">Access Denied</h1>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Google Sign-in</title>
+  </head>
+  <body>
+    <h1>Google Sign-in</h1>
+    <hr />
+
+    <div
+      id="g_id_onload"
+      data-client_id="704071441066-e0b9kqheboe4moi2a8qbg362b03gvtk9.apps.googleusercontent.com"
+      data-auto_prompt="false"
+      data-callback="handleCredentialResponse"
+    ></div>
+    <div
+      class="g_id_signin"
+      data-type="standard"
+      data-size="large"
+      data-theme="outline"
+      data-text="sign_in_with"
+      data-shape="rectangular"
+      data-logo_alignment="left"
+    ></div>
+
+    <button id="btn-google">log-out</button>
+
+    <script>
+        function handleCredentialResponse(response) {
+            
+            const body = {id_token: response.credential}
+            console.log('BODY: ',body);
+            fetch('http://localhost:8080/api/auth/google',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+                .then(resp => resp.json())
+                .then(resp =>{
+                    console.log(resp)
+                    localStorage.setItem('email',resp.user.email)
+                })
+                .catch(console.warn)
+        }
+
+        const btn = document.getElementById("btn-google")
+
+        btn.onclick= async ()=>{
+
+            console.log('GO',google.accounts.id);
+
+          google.accounts.id.disableAutoSelect();
+          google.accounts.id.revoke(localStorage.getItem('email'),done =>{
+            localStorage.clear()
+            location.reload()
+          })
+        }
+
+
+      </script>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </body>
 </html>

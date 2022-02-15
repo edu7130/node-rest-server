@@ -22,7 +22,7 @@ router.put('/:id',[
 
 //check('role','Email invalido').isIn(['ADMIN_ROLE','USER_ROLE']),
 router.post('/',[
-    validateJwt,
+    
     check('name','El nombre es requerido').notEmpty(),
     check('email','Email invalido').isEmail(),
     check('email').custom(isEmailExist),

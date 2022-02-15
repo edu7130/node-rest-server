@@ -4,24 +4,23 @@ const User = require('../models/user')
 
 
 const userGet = async (req = request, res = response)=>{
-    let {limit = 5, from = 0} = req.query
-    const query = { state: true }
+    let {limit = 5, page = 0} = req.query
+    const condition = { active: true }
 
     limit = Number(limit)
-    from = Number(from)
-
+    page = Number(page)
 
     //const users = await User.find().limit(Number(limit)).skip(Number(from))
 
     const [ count, users ] = await Promise.all([
-        User.count(query),
-        User.find(query).limit(Number(limit)).skip(Number(from))
+        User.count(condition),
+        User.find(condition).limit(Number(limit)).skip(Number(page))
     ]);
 
     const userAuth = req.user
     res.json({
         userAuth,
-        from,
+        page,
         limit,
         count,
         users

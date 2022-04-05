@@ -1,69 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Google Sign-in</title>
-  </head>
-  <body>
-    <h1>Google Sign-in</h1>
-    <hr />
 
-    <div
-      id="g_id_onload"
-      data-client_id="704071441066-e0b9kqheboe4moi2a8qbg362b03gvtk9.apps.googleusercontent.com"
-      data-auto_prompt="false"
-      data-callback="handleCredentialResponse"
-    ></div>
-    <div
-      class="g_id_signin"
-      data-type="standard"
-      data-size="large"
-      data-theme="outline"
-      data-text="sign_in_with"
-      data-shape="rectangular"
-      data-logo_alignment="left"
-    ></div>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@1,500;1,700&display=swap" rel="stylesheet">
+  <link href="css/styles.css" rel="stylesheet"/>
+  <title>Rest Server</title>
+</head>
 
-    <button id="btn-google">log-out</button>
+<body>
+  
+  <h1>Bienvenido a mi Rest Server</h1>
+  <main>
+    <section>
+      <h2>Descripción</h2>
+      <hr />
+      <p>Servidor creado con Express, JWT, MongoDB</p>
+      <p>
+        Con este Rest-Server puedes crear un usuario mediante la API o mediante Google Sing-in
+      </p>
+      <p>
+        Al autenticarte con tu usuario tambien puedes acceder a las funcionalidades de crear, editar, obtener y eliminar
+        productos y sus respectivas categorias categorias.
+      </p>
+      <a class="link-api" href="https://documenter.getpostman.com/view/7615718/UVkgxJnt" target="_Blank">Documentación de la API</a>
+      <a class="link-api" href="https://github.com/edu7130/node-rest-server" target="_Black">Repositorio</a>
+    </section>
+    <section>
+      <h2>Google Sign-in</h2>
+      <hr />
 
-    <script>
-        function handleCredentialResponse(response) {
-            
-            const body = {id_token: response.credential}
-            console.log('BODY: ',body);
-            fetch('http://localhost:8080/api/auth/google',{
-                method:'POST',
-                headers:{
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(body)
-            })
-                .then(resp => resp.json())
-                .then(resp =>{
-                    console.log(resp)
-                    localStorage.setItem('email',resp.user.email)
-                })
-                .catch(console.warn)
-        }
+      <div id="g_id_onload" data-client_id="704071441066-e0b9kqheboe4moi2a8qbg362b03gvtk9.apps.googleusercontent.com"
+        data-auto_prompt="false" data-callback="handleCredentialResponse"></div>
+      <div class="g_id_signin" data-type="standard" data-size="large" data-theme="outline" data-text="sign_in_with"
+        data-shape="rectangular" data-logo_alignment="left"></div>
 
-        const btn = document.getElementById("btn-google")
+      <button id="btn-google">Logout</button>
+    </section>
+  </main>
 
-        btn.onclick= async ()=>{
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="./js/main.js"></script>
 
-            console.log('GO',google.accounts.id);
+</body>
 
-          google.accounts.id.disableAutoSelect();
-          google.accounts.id.revoke(localStorage.getItem('email'),done =>{
-            localStorage.clear()
-            location.reload()
-          })
-        }
-
-
-      </script>
-
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-  </body>
 </html>

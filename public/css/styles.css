@@ -1,0 +1,67 @@
+* {
+    
+    font-family: 'Montserrat', sans-serif;
+}
+
+h1 {
+    color: white;
+    font-size: 3rem;
+    text-align: center;
+}
+
+body {
+    background-image: linear-gradient(131deg, rgba(101, 89, 209, 0.6547054254626563) 69%, rgba(242, 143, 121, 0.5) 29%), linear-gradient(44deg, rgba(74, 154, 224, 0.018565740943911724) 40%, rgba(255, 155, 193, 0.5) 49%), linear-gradient(6deg, rgba(16, 9, 150, 0.6580684387789184) 62%, rgba(255, 198, 201, 0.5) 129%), linear-gradient(116deg, rgba(45, 75, 173, 0.2648644818033452) 50%, rgba(255, 191, 204, 0.5) 37%);
+    background-blend-mode: hard-light, overlay, hard-light, overlay;
+}
+
+main {
+    display: flex;
+    flex-direction: row;
+    height: 80vh;
+}
+
+section {
+    opacity: 1;
+    margin: 1rem;
+    width: 50%;
+    border-radius: 2rem;
+    background-color: rgba(255, 255, 255, .05);
+    backdrop-filter: blur(10px);
+    padding: 1.5rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .2);
+    color: white;
+}
+button{
+    cursor: pointer;
+    padding: .5rem;
+    color: white;
+    font-weight: 700;
+    margin-top: 1rem;
+    width: 100%;
+    font-size: 1rem;
+    border-radius: 1rem;
+    outline: none;
+    border: none;
+    background: #4B44D4;
+}
+
+.link-api{
+    display: block;
+    color: white;
+    font-weight: bold;
+    margin-top: .5rem;
+    font-size: 1.2rem;
+}
+
+@media screen and (max-width: 768px) {
+    main{
+        flex-direction: column;
+        padding-bottom: 3rem;
+
+        height: auto;
+    }
+    section{
+        margin: 1rem auto;
+        width: 80%;
+    }
+}

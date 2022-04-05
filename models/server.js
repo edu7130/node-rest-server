@@ -8,7 +8,7 @@ const {dbConnection} = require('../database/config')
 class Server{
 
     constructor(){
-        this.port = process.env.PORT
+        this.port = process.env.PORT || 80
         this.app = express();
 
         this.paths = {
